@@ -17,8 +17,11 @@ struct Customer{
 	int m_total;				//total number of popplers that they ate
 };										//struct that holds the data for each customer
 
-void orderPopplers(Customer& c);
-void eatPopplers(Customer& c);
+void orderPopplers(Customer&);
+void eatPopplers(Customer&);
+void mostPopplers(PopplersQueue<Customer>*&);
+void leastPopplers(PopplersQueue<Customer>*&);
+
 
 int main() {	
 	int numCustomers;	//variable representing the number of customers
@@ -48,7 +51,6 @@ int main() {
 
 	//node representing the first position in line
 	QNode<Customer>* first = pq->m_first;
-	total += first->m_data.m_numPopplers;
 
 	//have all the customers in line order
 	while(first != NULL){
@@ -64,7 +66,6 @@ int main() {
 		Customer tmp = {first->m_data.m_name, first->m_data.m_numPopplers, first->m_data.m_eaten, 
 										first->m_data.m_total};
 	
-		//increment total number of eaten popplers
 		total += tmp.m_eaten;
 
 		//case of customer wanting 1 more poppler
@@ -83,7 +84,8 @@ int main() {
 		else{
 			Customer stat = {tmp.m_name, tmp.m_numPopplers, tmp.m_eaten, tmp.m_total};
 			stats->enqueue(stat);
-			cout << " " << tmp.m_name << " was satisfied and got out of line." << endl;
+			cout << " " << tmp.m_name << " was satisfied after eating " << tmp.m_total 
+					<< " popplers." << endl;
 		}	
 
 	
@@ -95,59 +97,9 @@ int main() {
 		first = pq->m_first;
 	}
 	
-	cout << "A total of " << total << " popplers were eaten." << endl;
-
-	//Section for most eaten popplers------------------------------------
-	Customer mostEaten;
-	int max = 0;
-
-	QNode<Customer>* cur1 = stats->m_first;
-	while(cur1->m_next != NULL){
-		if(max < cur1->m_data.m_total){
-			mostEaten = cur1->m_data;			
-		}				
-		cur1 = cur1->m_next;		
-		max = mostEaten.m_total;
-	}
-	if(max < cur1->m_data.m_total){
-		mostEaten = cur1->m_data;
-	}
-	max = mostEaten.m_total;
-
-	cout << "Most popplers eaten: " << max << " by " << mostEaten.m_name << endl;
-
-	//Section for least eaten popplers-----------------------------------
-	Customer leastEaten;
-	int min = 2147483647;
-
-	QNode<Customer>* cur2 = stats->m_first;
-	while(cur2->m_next != NULL){
-		if(min > cur2->m_data.m_total){
-			leastEaten = cur2->m_data;			
-		}				
-		cur2 = cur2->m_next;		
-		min = leastEaten.m_total;
-	}
-	if(min > cur2->m_data.m_total){
-		leastEaten = cur2->m_data;
-	}
-	min = leastEaten.m_total;
-
-	cout << "Least popplers eaten: " << min << " by " << leastEaten.m_name << endl;
-
-	/*cout << "A total of " << total << " popplers were eaten." << endl;
-	cout << "Max: " << most.m_eaten << endl;
-	cout << "Min: " << least.m_eaten << endl;*/
-
-	/*//temporary test--------------------------------
-	QNode<Customer>* cur = stats->m_first;
-	while(cur->m_next != NULL){
-		cout << cur->m_data.m_name << ": " << cur->m_data.m_total << endl;
-		cur = cur->m_next;
-	}
-	cout << cur->m_data.m_name << ": " << cur->m_data.m_total << endl;
-	//----------------------------------------------
-	*/
+	cout << "\nA total of " << total << " popplers were eaten." << endl;
+	mostPopplers(stats);
+	leastPopplers(stats);
 }
 
 ////////////////////////////////////////////////////////
@@ -203,15 +155,48 @@ void eatPopplers(Customer& c){
 //@fn mostPopplers
 //@brief determines who ate the most popplers in a queue
 //@param q queue of customers
-//@return integer equal to the highest number of popplers
-//				eaten in a customer queue
 /////////////////////////////////////////////////////////
+void mostPopplers(PopplersQueue<Customer>*& q){
+	Customer mostEaten;
+	int max = 0;
 
+	QNode<Customer>* cur = q->m_first;
+	while(cur->m_next != NULL){
+		if(max < cur->m_data.m_total){
+			mostEaten = cur->m_data;			
+		}				
+		cur = cur->m_next;		
+		max = mostEaten.m_total;
+	}
+	if(max < cur->m_data.m_total){
+		mostEaten = cur->m_data;
+	}
+	max = mostEaten.m_total;
+
+	cout << mostEaten.m_name << " ate the most popplers: " << max << endl;
+}
 
 /////////////////////////////////////////////////////////
 //@fn leastPopplers
 //@brief determines who ate the least popplers in a queue
 //@param q queue of customers
-//@return integer equal to the lowest number of popplers
-//				eaten in a customer queue
 /////////////////////////////////////////////////////////
+void leastPopplers(PopplersQueue<Customer>*& q){
+	Customer leastEaten;
+	int min = 2147483647;
+
+	QNode<Customer>* cur = q->m_first;
+	while(cur->m_next != NULL){
+		if(min > cur->m_data.m_total){
+			leastEaten = cur->m_data;			
+		}				
+		cur = cur->m_next;		
+		min = leastEaten.m_total;
+	}
+	if(min > cur->m_data.m_total){
+		leastEaten = cur->m_data;
+	}
+	min = leastEaten.m_total;
+
+	cout << leastEaten.m_name << " ate the fewest popplers: " << min << endl;
+}
