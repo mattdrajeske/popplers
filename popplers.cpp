@@ -11,11 +11,11 @@
 using namespace std;
 
 struct Customer{
-	string m_name;			//name of customer
-	int m_numPopplers;	//number of popplers that they want
-	int m_eaten;				//number of popplers that they ate in one iteration
-	int m_total;				//total number of popplers that they ate
-};										//struct that holds the data for each customer
+	string m_name; //name of customer
+	int m_numPopplers; //number of popplers that they want
+	int m_eaten; //number of popplers that they ate in one iteration
+	int m_total; //total number of popplers that they ate
+}; //struct that holds the data for each customer
 
 void orderPopplers(Customer&);
 void eatPopplers(Customer&);
@@ -24,9 +24,9 @@ void leastPopplers(PopplersQueue<Customer>*&);
 
 
 int main() {	
-	int numCustomers;	//variable representing the number of customers
-	string name;			//variable representing the name of a customers
-	int numPopplers;	//variable representing the number of popplers a customer wants
+	int numCustomers; //variable representing the number of customers
+	string name; //variable representing the name of a customers
+	int numPopplers; //variable representing the number of popplers a customer wants
 
 	//queue that represents the line of customers
 	PopplersQueue<Customer>* pq = new PopplersQueue<Customer>();
@@ -100,6 +100,9 @@ int main() {
 	cout << "\nA total of " << total << " popplers were eaten." << endl;
 	mostPopplers(stats);
 	leastPopplers(stats);
+
+	delete pq;
+	delete stats;
 }
 
 ////////////////////////////////////////////////////////
@@ -159,6 +162,9 @@ void eatPopplers(Customer& c){
 void mostPopplers(PopplersQueue<Customer>*& q){
 	Customer mostEaten;
 	int max = 0;
+	if(q->isEmpty()){
+		return;
+	}
 
 	QNode<Customer>* cur = q->m_first;
 	while(cur->m_next != NULL){
@@ -184,6 +190,9 @@ void mostPopplers(PopplersQueue<Customer>*& q){
 void leastPopplers(PopplersQueue<Customer>*& q){
 	Customer leastEaten;
 	int min = 2147483647;
+	if(q->isEmpty()){
+		return;
+	}
 
 	QNode<Customer>* cur = q->m_first;
 	while(cur->m_next != NULL){
