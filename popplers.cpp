@@ -23,7 +23,7 @@ void mostPopplers(PopplersQueue<Customer>*&);
 void leastPopplers(PopplersQueue<Customer>*&);
 
 
-int main() {	
+int main(){	
 	int numCustomers;	//variable representing the number of customers
 	string name;			//variable representing the name of a customers
 	int numPopplers;	//variable representing the number of popplers a customer wants
