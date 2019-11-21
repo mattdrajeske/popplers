@@ -18,7 +18,7 @@ struct Customer{
 }; //struct that holds the data for each customer
 
 void orderPopplers(Customer&);
-void eatPopplers(Customer&);
+void eatPopplers(Customer&, randomEngine&);
 void mostPopplers(PopplersQueue<Customer>*&);
 void leastPopplers(PopplersQueue<Customer>*&);
 
@@ -27,6 +27,8 @@ int main() {
 	int numCustomers; //variable representing the number of customers
 	string name; //variable representing the name of a customers
 	int numPopplers; //variable representing the number of popplers a customer wants
+
+	randomEngine rand;
 
 	//queue that represents the line of customers
 	PopplersQueue<Customer>* pq = new PopplersQueue<Customer>();
@@ -60,7 +62,7 @@ int main() {
 		cout << first->m_data.m_name << " ate " << first->m_data.m_eaten <<
 				 " popplers.";
 
-		eatPopplers(first->m_data);
+		eatPopplers(first->m_data, rand);
 
 		//temporary variable
 		Customer tmp = {first->m_data.m_name, first->m_data.m_numPopplers, first->m_data.m_eaten, 
@@ -138,8 +140,7 @@ void orderPopplers(Customer& c){
 //				chance that they will get back in line			
 //@param c customer at the front of the line					
 ////////////////////////////////////////////////////////
-void eatPopplers(Customer& c){
-	randomEngine rand;	//random engine 
+void eatPopplers(Customer& c, randomEngine& rand){
 	int count = 0;			//counter for the number of popplers a customer will want in the next iteration
 
 	//loop through each poppler eaten to see if the customer will get back in line
